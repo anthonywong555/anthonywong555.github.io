@@ -1,0 +1,16 @@
+{
+"companyName": "DefaultCompany",
+"productName": "GGJ2021",
+"productVersion": "0.1",
+"dataUrl": "NewTestSoundV3.data.unityweb",
+"wasmCodeUrl": "NewTestSoundV3.wasm.code.unityweb",
+"wasmFrameworkUrl": "NewTestSoundV3.wasm.framework.unityweb",
+"graphicsAPI": ["WebGL 2.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20",
+"cacheControl": {"default": "must-revalidate"},
+"developmentBuild": false,
+"multithreading": false,
+"unityVersion": "2019.4.18f1"
+}
