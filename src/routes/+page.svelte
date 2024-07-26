@@ -1,6 +1,7 @@
 <script lang="ts">
   import { base } from "$app/paths";
 
+  import csv from "csvtojson";
   import "cal-heatmap/cal-heatmap.css";
   import CalHeatmap from 'cal-heatmap';
   import Tooltip from 'cal-heatmap/plugins/Tooltip';
@@ -9,6 +10,7 @@
 
   const START_DATE = new Date('07/01/2024');
   const RANGE = 6;
+  const PASTEL_COLOR = ["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"];
   /*
   let heatmaps = [];
 
@@ -124,11 +126,83 @@
       label: null,
       color: '#FFF',
     }
-    })
+    });
+
+    /**
+     * Books
+    */
+
+    try {
+      const booksEntriesCSV = await (await fetch(`${base}/data/books/entries.csv`)).text();
+      let booksEntriesJSON = await csv().fromString(booksEntriesCSV);
+      console.log(booksEntriesJSON);
+
+      // Add TitleId
+      const bookTitles = Array.from(new Set(booksEntriesJSON.map((aBook) => aBook.title)));
+      
+      booksEntriesJSON = booksEntriesJSON.map((aBookEntry) => {
+        return {...aBookEntry, titleId: bookTitles.indexOf(aBookEntry.title)};
+      });
+
+      console.log('booksEntriesJSON', booksEntriesJSON);
+
+      // Generate Domain
+      const bookDomains = Array.from(new Set(booksEntriesJSON.map((aBook) => Number(aBook.titleId))));
+      console.log(bookDomains);
+
+      // Generate Range
+      const bookRanges = getRandom(PASTEL_COLOR, bookDomains.length);
+      console.log(bookRanges);
+
+      new CalHeatmap().paint({
+        data: {
+          source: booksEntriesJSON,
+          x: 'date',
+          y: d => +d['titleId'],
+      },
+      date: { start: START_DATE },
+      range: RANGE,
+      itemSelector: '#books-heatmap',
+      scale: {
+        color: {
+          type: 'ordinal',
+          domain: bookDomains,
+        range: bookRanges,
+        },
+      },
+      domain: { type: 'month' },
+      subDomain: {
+        width: 15,
+        height: 15,
+        type: 'day',
+        label: null,
+        color: '#FFF',
+      }
+      });
+
+    } catch (e) {
+      console.log(e);
+    }
 })
 
 const getDateString = (aDate) => {
   return `${aDate.getMonth() + 1}/${aDate.getDate()}/${aDate.getFullYear()}`
+}
+
+
+// Source: https://stackoverflow.com/questions/19269545/how-to-get-a-number-of-random-elements-from-an-array
+function getRandom(arr, n) {
+    var result = new Array(n),
+        len = arr.length,
+        taken = new Array(len);
+    if (n > len)
+        throw new RangeError("getRandom: more elements taken than available");
+    while (n--) {
+        var x = Math.floor(Math.random() * len);
+        result[n] = arr[x in taken ? taken[x] : x];
+        taken[x] = --len in taken ? taken[len] : len;
+    }
+    return result;
 }
 </script>
 
