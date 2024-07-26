@@ -141,7 +141,9 @@
       const bookTitles = Array.from(new Set(booksEntriesJSON.map((aBook) => aBook.title)));
       
       booksEntriesJSON = booksEntriesJSON.map((aBookEntry) => {
-        return {...aBookEntry, titleId: bookTitles.indexOf(aBookEntry.title)};
+        // The Reason why you +1 is because when you do the tool tip. It does the check
+        // against the value. In this case it would be the titleId
+        return {...aBookEntry, titleId: bookTitles.indexOf(aBookEntry.title) + 1};
       });
 
       console.log('booksEntriesJSON', booksEntriesJSON);
@@ -178,7 +180,36 @@
         label: null,
         color: '#FFF',
       }
-      });
+      }, [
+    [
+      Tooltip,
+      {
+        text: function (date, value, dayjsDate) {
+          if(value) {
+            console.log(dayjsDate);
+            console.log(value);
+            console.log(Object.keys(dayjsDate));
+            const selectDate = new Date(dayjsDate['$d']);
+            console.log('selectDate', selectDate);
+            const formattedSelectDateString = getDateString(selectDate);
+            console.log('formattedSelectDateString', formattedSelectDateString);
+
+            const anActivity = booksEntriesJSON.find((anActivity) => {
+              const activityDate = getDateString(new Date(anActivity.date));
+              console.log('activityDate', activityDate);
+              console.log(formattedSelectDateString == activityDate);
+              return formattedSelectDateString == activityDate;
+            });
+
+            if(anActivity) {
+              console.log('hit');
+              return `${anActivity.title}: ${anActivity.pages} Pages`;
+            }
+          }
+          return '';
+        },
+      },
+    ]]);
 
     } catch (e) {
       console.log(e);
