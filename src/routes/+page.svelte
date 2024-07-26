@@ -7,6 +7,8 @@
   import Legend from 'cal-heatmap/plugins/Legend';
 	import { onMount } from "svelte";
 
+  const START_DATE = new Date('07/01/2024');
+  const RANGE = 6;
   /*
   let heatmaps = [];
 
@@ -48,8 +50,8 @@
       x: 'date',
       y: 'value',
     },
-    date: { start: new Date('07/01/2024') },
-    range: 6,
+    date: { start: START_DATE },
+    range: RANGE,
     itemSelector: '#chess-heatmap',
     scale: {
       color: {
@@ -96,6 +98,33 @@
         },
       },
     ]]);
+
+    const puzzlesHeatMap = new CalHeatmap().paint({
+      data: {
+        source: `${base}/data/puzzles/NYT.csv`,
+        type: 'csv',
+        x: 'date',
+        y: d => +d['value'],
+    },
+    date: { start: START_DATE },
+    range: RANGE,
+    itemSelector: '#puzzles-heatmap',
+    scale: {
+      color: {
+        type: 'ordinal',
+        domain: [50, 100],
+        range: ['yellow', 'green'],
+      },
+    },
+    domain: { type: 'month' },
+    subDomain: {
+      width: 15,
+      height: 15,
+      type: 'day',
+      label: null,
+      color: '#FFF',
+    }
+    })
 })
 
 const getDateString = (aDate) => {
@@ -106,23 +135,24 @@ const getDateString = (aDate) => {
 <h1>Anthony Wong's Habit Tracker</h1>
 
 <div id="heatmaps">
-  <div id="chess">
-    <h1>Chess ♟️</h1>
-    <div id="chess-heatmap"></div>
-  </div>
-
-  <div id="books">
-    <h1>Books 📚</h1>
-    <div id="books-heatmap"></div>
-  </div>
-
   <div id="fitness">
-    <h1>Fitness 🏋️</h1>
+    <h1>🏃 Fitness 🏋️</h1>
     <div id="fitness-heatmap"></div>
   </div>
 
+  <div id="books">
+    <h1>📚 Books 🛋️</h1>
+    <div id="books-heatmap"></div>
+  </div>
+
+  <div id="chess">
+    <h1>♟️ Chess ♞</h1>
+    <div id="chess-heatmap"></div>
+  </div>
+
   <div id="puzzles">
-    <h1>Puzzle 🧩</h1>
+    <h1>🧩🔠 Puzzles ✍🏁</h1>
+    <div id="puzzles-heatmap"></div>
   </div>
 </div>
 

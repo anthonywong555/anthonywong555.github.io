@@ -1,15 +1,15 @@
 [
     {
         "name": "Chess",
-        "datas": ["chess/ChessDotCom.json", "chess/TheWoodpeckerMethod.json"]
+        "sources": ["chess/ChessDotCom.json", "chess/TheWoodpeckerMethod.json"]
     }, {
         "name": "Books 📚",
-        "datas": []
+        "sources": []
     }, {
         "name": "Fitness 🏋️",
-        "datas": []
+        "sources": []
     }, {
         "name": "Puzzles 🧩",
-        "datas": []
+        "sources": ["puzzles/NYT.csv"]
     }
 ]
