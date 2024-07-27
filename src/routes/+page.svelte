@@ -26,7 +26,7 @@
         {
           'id': 'books',
           'title': '📚 Books 🛋️',
-          'heatMap': 'booksV2',
+          'heatMap': 'books',
           'sources': '/data/books/entries.csv'
         }
       ];

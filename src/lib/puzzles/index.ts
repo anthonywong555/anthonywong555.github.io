@@ -32,6 +32,8 @@ export default class PuzzleHeatMap implements HeatMapInterface {
       return {...aLog, value};
     });
 
+    this.logs = newPuzzleLogs;
+
     return newPuzzleLogs;
   }
 
