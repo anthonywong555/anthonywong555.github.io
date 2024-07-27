@@ -1,5 +1,6 @@
 <script lang="ts">
   import { base } from "$app/paths";
+  import { fetchCSVandConvertToJSON } from '../lib/util';
 
   import csv from "csvtojson";
   import "cal-heatmap/cal-heatmap.css";
@@ -7,6 +8,10 @@
   import Tooltip from 'cal-heatmap/plugins/Tooltip';
   import Legend from 'cal-heatmap/plugins/Legend';
 	import { onMount } from "svelte";
+
+  import {generateValue, generateDomains, generateRanges} from '../lib/books/index';
+
+  import { PuzzleHeatMap } from '../lib/puzzles/index';
 
   const START_DATE = new Date('07/01/2024');
   const RANGE = 6;
@@ -101,6 +106,19 @@
       },
     ]]);
 
+      /**
+       * Puzzles
+       */
+      try {
+        let puzzlesLogs = await fetchCSVandConvertToJSON(`${base}/data/puzzles/NYT.csv`);
+        console.log(`puzzlesLogs`, puzzlesLogs);
+        puzzlesLogs = PuzzleHeatMap.generateValue(puzzlesLogs);
+
+        console.log(`puzzlesLogs`, puzzlesLogs);
+      } catch (e) {
+        console.log(`Error! \n ${e}`);
+      }
+
     const puzzlesHeatMap = new CalHeatmap().paint({
       data: {
         source: `${base}/data/puzzles/NYT.csv`,
@@ -135,32 +153,20 @@
     try {
       const booksEntriesCSV = await (await fetch(`${base}/data/books/entries.csv`)).text();
       let booksEntriesJSON = await csv().fromString(booksEntriesCSV);
-      console.log(booksEntriesJSON);
 
-      // Add TitleId
-      const bookTitles = Array.from(new Set(booksEntriesJSON.map((aBook) => aBook.title)));
-      
-      booksEntriesJSON = booksEntriesJSON.map((aBookEntry) => {
-        // The Reason why you +1 is because when you do the tool tip. It does the check
-        // against the value. In this case it would be the titleId
-        return {...aBookEntry, titleId: bookTitles.indexOf(aBookEntry.title) + 1};
-      });
-
-      console.log('booksEntriesJSON', booksEntriesJSON);
+      // Generate Value
+      booksEntriesJSON = generateValue(booksEntriesJSON);
 
       // Generate Domain
-      const bookDomains = Array.from(new Set(booksEntriesJSON.map((aBook) => Number(aBook.titleId))));
-      console.log(bookDomains);
+      const bookDomains = generateDomains(booksEntriesJSON);
 
       // Generate Range
-      const bookRanges = getRandom(PASTEL_COLOR, bookDomains.length);
-      console.log(bookRanges);
-
+      const bookRanges = generateRanges(booksEntriesJSON);
       new CalHeatmap().paint({
         data: {
           source: booksEntriesJSON,
           x: 'date',
-          y: d => +d['titleId'],
+          y: d => +d['value'],
       },
       date: { start: START_DATE },
       range: RANGE,
@@ -248,6 +254,7 @@ function getRandom(arr, n) {
   <div id="books">
     <h1>📚 Books 🛋️</h1>
     <div id="books-heatmap"></div>
+    <div id="books-legend-label"></div>
   </div>
 
   <div id="chess">

@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "cal-heatmap": "^4.2.4",
-    "csvtojson": "^2.0.10"
+    "csvtojson": "^2.0.10",
+    "json-rules-engine": "^6.5.0"
   }
 }
