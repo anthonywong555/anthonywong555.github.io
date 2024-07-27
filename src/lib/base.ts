@@ -1,8 +1,8 @@
 import type { RuleProperties } from "json-rules-engine";
 
 export interface HeatMapInterface {
-  logs: Log[];
-  logKeys: string[];
+  logs?: Log[];
+  logKeys?: string[];
 
   /**
    * Generate a the JSON Rules for the Engine.
