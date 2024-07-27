@@ -110,18 +110,53 @@
        * Puzzles
        */
       try {
-        let puzzlesLogs = await fetchCSVandConvertToJSON(`${base}/data/puzzles/NYT.csv`);
-        console.log(`puzzlesLogs`, puzzlesLogs);
-        puzzlesLogs = PuzzleHeatMap.generateValue(puzzlesLogs);
+        const puzzlesCSV = await fetchCSVandConvertToJSON(`${base}/data/puzzles/NYT.csv`);
+        const puzzleHeatMap = new PuzzleHeatMap(puzzlesCSV);
+        const puzzleLogs = puzzleHeatMap.generateValue();
+        const puzzleDomains = puzzleHeatMap.generateDomains();
+        const puzzleRanges = puzzleHeatMap.generateRanges();
+        
+        new CalHeatmap().paint({
+          data: {
+            source: puzzleLogs,
+            x: 'date',
+            y: d => +d['value'],
+        },
+        date: { start: START_DATE },
+        range: RANGE,
+        itemSelector: '#puzzles-heatmap',
+        scale: {
+          color: {
+            type: 'threshold',
+            domain: puzzleDomains,
+            range: puzzleRanges,
+          },
+        },
+        domain: { type: 'month' },
+        subDomain: {
+          width: 15,
+          height: 15,
+          type: 'day',
+          label: null,
+          color: '#FFF',
+        }
+        }, [
+        [
+          Tooltip,
+          {
+            text: puzzleHeatMap.toolTip,
+          },
+        ]]);
 
-        console.log(`puzzlesLogs`, puzzlesLogs);
+
       } catch (e) {
         console.log(`Error! \n ${e}`);
       }
 
+      /*
     const puzzlesHeatMap = new CalHeatmap().paint({
       data: {
-        source: `${base}/data/puzzles/NYT.csv`,
+        source: puzzlesLogs,
         type: 'csv',
         x: 'date',
         y: d => +d['value'],
@@ -131,9 +166,9 @@
     itemSelector: '#puzzles-heatmap',
     scale: {
       color: {
-        type: 'ordinal',
-        domain: [50, 100],
-        range: ['yellow', 'green'],
+        type: 'threshold',
+        domain: puzzleDomains,
+        range: puzzleRanges,
       },
     },
     domain: { type: 'month' },
@@ -144,8 +179,37 @@
       label: null,
       color: '#FFF',
     }
-    });
+    }, [
+    [
+      Tooltip,
+      {
+        text: function (date, value, dayjsDate) {
+          if(value) {
+            console.log(dayjsDate);
+            console.log(value);
+            console.log(Object.keys(dayjsDate));
+            const selectDate = new Date(dayjsDate['$d']);
+            console.log('selectDate', selectDate);
+            const formattedSelectDateString = getDateString(selectDate);
+            console.log('formattedSelectDateString', formattedSelectDateString);
 
+            const anActivity = puzzlesLogs.find((anActivity) => {
+              const activityDate = getDateString(new Date(anActivity.date));
+              console.log('activityDate', activityDate);
+              console.log(formattedSelectDateString == activityDate);
+              return formattedSelectDateString == activityDate;
+            });
+
+            if(anActivity) {
+              console.log('hit');
+              return `Hit`;
+            }
+          }
+          return '';
+        },
+      },
+    ]]);
+      */
     /**
      * Books
     */

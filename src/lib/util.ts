@@ -25,12 +25,38 @@ export function getRandomFromArray(arr: Array<any>, n:any) {
 }
 
 /**
+ * https://stackoverflow.com/questions/1026069/how-do-i-make-the-first-letter-of-a-string-uppercase-in-javascript
+ * @param string 
+ * @returns 
+ */
+export function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+/**
  * Normalize a Date object into a formatted strings.
  * @param aDate new Date('07/22/1993');
  * @returns A string of date: '07/22/1993'
  */
 export function getDateString(aDate: Date):string {
   return `${aDate.getMonth() + 1}/${aDate.getDate()}/${aDate.getFullYear()}`
+}
+
+/**
+ * Find a specific element within Log by using the date field.
+ * @param targetDate Target Date
+ * @param logs Array of Logs
+ * @returns Either the Log or Null Object
+ */
+export function findLog(targetDate: Date, logs: Array<Log>): Log {
+  const formattedSelectDateString = getDateString(targetDate);
+
+  const aLog = logs.find((aLog) => {
+    const activityDate = getDateString(new Date(aLog.date));
+    return formattedSelectDateString == activityDate;
+  });
+
+  return aLog;
 }
 
 /**

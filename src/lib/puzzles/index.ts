@@ -2,59 +2,109 @@ import type { HeatMapInterface } from '../base';
 import type { PuzzleLog } from './types';
 import type { RuleProperties } from 'json-rules-engine';
 import { Engine } from 'json-rules-engine';
+import { findLog } from '../util';
+
+const PUZZLE_DOMAIN = [1,2,3];
+const PUZZLE_RANGES = ['#14432a', '#166b34', '#37a446', '#4dd05a'];
 
 export class PuzzleHeatMap implements HeatMapInterface {
+  logs: Array<PuzzleLog>;
+  puzzleKeys: Array<string>;
+
+  constructor(logs: Array<PuzzleLog>) {
+    this.logs = logs;
+
+    if(logs.length > 0) {
+      const keys = Object.keys(this.logs[0]);
+      this.puzzleKeys = keys;
+    }
+  }
+
   /**
    * Class Methods
    */
-  generateJSONRulesEngine():RuleProperties {
-    return PuzzleHeatMap.generateJSONRulesEngine();
+  generateJSONRulesEngine():Array<RuleProperties> {
+    return null;
   }
 
-  generateValue(logs: Array<PuzzleLog>): Array<PuzzleLog> {
-    return PuzzleHeatMap.generateValue(logs);
+  generateValue(): Array<PuzzleLog> {
+    const newPuzzleLogs = this.logs.map((aLog) => {
+      // Count the number of Puzzles has been in progress or completed.
+      let value = 0;
+
+      for(const aKey of this.puzzleKeys) {
+        if(aLog[aKey] == 'true') {
+          value = value + 1;
+        }
+      }
+
+      return {...aLog, value};
+    });
+
+    return newPuzzleLogs;
   }
 
-  generateDomains(logs: Array<PuzzleLog>):Array<Number> {
-    return PuzzleHeatMap.generateDomains(logs);
+  generateDomains():Array<Number> {
+    return PUZZLE_DOMAIN;
   }
 
-  generateRanges(logs: Array<PuzzleLog>):Array<string> {
-    return PuzzleHeatMap.generateRanges(logs);
+  generateRanges():Array<string> {
+    return PUZZLE_RANGES;
   }
 
-static generateJSONRulesEngine():RuleProperties {
-  
-  return ;
-}
+  toolTip(date:any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
+    if(value) {
+      const aLog = findLog(new Date(dayjsDate), this.logs);
+
+      if(aLog) {
+        // Get a list of items that has the value 'true'.
+        let completedPuzzles = [];
+        for(const aKey of this.puzzleKeys) {
+          if(aLog[aKey] == 'true') {
+            completedPuzzles.push(aKey);
+          }
+        }
+
+        return completedPuzzles.join(' ');
+      }
+    }
+    return '';
+  }
 
   /**
    * Static Methods
    */
-  static generateValue(logs: Array<PuzzleLog>): Array<PuzzleLog> {
-    const engine = new Engine();
+  /*
+  static generateValue(logs: Array<PuzzleLog> = []): Array<PuzzleLog> {
+    let puzzleKeys = [];
 
-    const newPuzzleLog = logs.map((aLog) => {
-      // Add Rules
-      const { mini, strands, connnections, wordle, crossword } = aLog;
+    if(logs.length > 0) {
+      const keys = Object.keys(logs[0]);
+      puzzleKeys = keys;
+    }
 
-      if(mini || strands || connnections || wordle || crossword) {
-        
+    const newPuzzleLogs = logs.map((aLog) => {
+      // Count the number of Puzzles has been in progress or completed.
+      let value = 0;
+
+      for(const aKey of puzzleKeys) {
+        if(aLog[aKey] == 'true') {
+          value = value + 1;
+        }
       }
+
+      return {...aLog, value};
     });
-    return 
+
+    return newPuzzleLogs;
   }
   
-  /**
-   * Return Domain for a heatmap.
-   * @param logs 
-   * @returns 
-   */
   static generateDomains(logs: Array<PuzzleLog>):Array<Number> {
-    return [];
+    return [1,2,3];
   }
 
   static generateRanges(logs: Array<PuzzleLog>):Array<string> {
-    return [];
+    return ['#14432a', '#166b34', '#37a446', '#4dd05a'];
   }
+    */
 }
