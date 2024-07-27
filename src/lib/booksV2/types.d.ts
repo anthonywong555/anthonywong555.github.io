@@ -1,4 +1,4 @@
-import type { Log } from '../types';
+import type { Log } from '$lib/base';
 
 export interface BookLog extends Log {
   title: string,

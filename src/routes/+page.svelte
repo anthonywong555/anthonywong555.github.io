@@ -1,4 +1,110 @@
 <script lang="ts">
+  import "cal-heatmap/cal-heatmap.css";
+  import CalHeatmap from 'cal-heatmap';
+  import Tooltip from 'cal-heatmap/plugins/Tooltip';
+	import { onMount } from "svelte";
+  import { fetchCSVandConvertToJSON } from "$lib/util";
+  //import { PuzzleHeatMap } from '$lib/puzzles';
+  //import { BookHeatMap } from "$lib/booksV2";
+  
+  /**
+   * Constants
+   */
+  const START_DATE = new Date('07/01/2024');
+  const RANGE = 6;
+
+  $: heatmaps = [];
+
+  onMount(async() => {
+    try {
+      // Fetch Configurations.
+      const testConfigs = [
+        {
+          'id': 'puzzles',
+          'title': '🧩🔠 Puzzles ✍🏁',
+          'heatMap': '../lib/puzzles',
+          'sources': `/data/puzzles/NYT.csv`
+        }, 
+        {
+          'id': 'books',
+          'title': '📚 Books 🛋️',
+          'heatMap': '../lib/booksV2',
+          'sources': '/data/books/entries.csv'
+        }
+      ];
+      
+      // Iterate over the Congrations
+      for(const aConfig of testConfigs) {
+        const dynamicImport = await import(aConfig.heatMap);
+        
+        // Check to see if there's a default export.
+        if(dynamicImport.default) {
+          // Generate the heatmap.
+          const heatMapClass = dynamicImport.default;
+          const targetCSV = await fetchCSVandConvertToJSON(aConfig.sources);
+          const heatMap = new heatMapClass(targetCSV);
+          const logs = heatMap.generateValue();
+          const domains = heatMap.generateDomains();
+          const ranges = heatMap.generateRanges();
+
+          // Generate the HTML
+          heatmaps = [...heatmaps, {...aConfig}];
+          new CalHeatmap().paint({
+            data: {
+              source: logs,
+              x: 'date',
+              y: d => +d['value'],
+            },
+            date: { start: START_DATE },
+          range: RANGE,
+          itemSelector: `#${aConfig.id}-heatmap`,
+          scale: {
+            color: {
+              type: 'threshold',
+              domain: domains,
+              range: ranges,
+            },
+          },
+          domain: { type: 'month' },
+          subDomain: {
+            width: 15,
+            height: 15,
+            type: 'day',
+            label: null,
+            color: '#FFF',
+          }
+          }, 
+          [
+            [
+              Tooltip,
+              {
+                text: (date, value, dayjsDate) => {
+                  return heatMap.toolTip(date, value, dayjsDate, heatMap);
+                },
+              },
+            ]
+          ]);
+        }
+      }
+    } catch(e) {
+      console.log(e);
+    }
+  });
+</script>
+
+<h1>Anthony Wong's Habit Tracker</h1>
+
+<div id="heatmaps">
+  {#each heatmaps as aHeatMap}
+    <div id={aHeatMap.id}>
+      <h1>{aHeatMap.title}</h1>
+      <div id={`${aHeatMap.id}-heatmap`}></div>
+    </div>
+  {/each}
+</div>
+
+<!--
+<script lang="ts">
   import { base } from "$app/paths";
   import { fetchCSVandConvertToJSON } from '../lib/util';
 
@@ -10,7 +116,8 @@
 
   import {generateValue, generateDomains, generateRanges} from '../lib/books/index';
 
-  import { PuzzleHeatMap } from '../lib/puzzles/index';
+  import { PuzzleHeatMap } from '$lib/puzzles';
+  import { BookHeatMap } from "$lib/booksV2";
 
   const START_DATE = new Date('07/01/2024');
   const RANGE = 6;
@@ -218,20 +325,15 @@
     */
 
     try {
-      const booksEntriesCSV = await (await fetch(`${base}/data/books/entries.csv`)).text();
-      let booksEntriesJSON = await csv().fromString(booksEntriesCSV);
-
-      // Generate Value
-      booksEntriesJSON = generateValue(booksEntriesJSON);
-
-      // Generate Domain
-      const bookDomains = generateDomains(booksEntriesJSON);
-
-      // Generate Range
-      const bookRanges = generateRanges(booksEntriesJSON);
+      const booksCSV = await fetchCSVandConvertToJSON(`${base}/data/books/entries.csv`);
+      const bookHeatMap = new BookHeatMap(booksCSV);
+      const bookLogs = bookHeatMap.generateValue();
+      const bookDomains = bookHeatMap.generateDomains();
+      const bookRanges = bookHeatMap.generateRanges();
+      
       new CalHeatmap().paint({
         data: {
-          source: booksEntriesJSON,
+          source: bookLogs,
           x: 'date',
           y: d => +d['value'],
       },
@@ -242,7 +344,7 @@
         color: {
           type: 'ordinal',
           domain: bookDomains,
-        range: bookRanges,
+          range: bookRanges,
         },
       },
       domain: { type: 'month' },
@@ -253,37 +355,17 @@
         label: null,
         color: '#FFF',
       }
-      }, [
-    [
-      Tooltip,
-      {
-        text: function (date, value, dayjsDate) {
-          if(value) {
-            console.log(dayjsDate);
-            console.log(value);
-            console.log(Object.keys(dayjsDate));
-            const selectDate = new Date(dayjsDate['$d']);
-            console.log('selectDate', selectDate);
-            const formattedSelectDateString = getDateString(selectDate);
-            console.log('formattedSelectDateString', formattedSelectDateString);
-
-            const anActivity = booksEntriesJSON.find((anActivity) => {
-              const activityDate = getDateString(new Date(anActivity.date));
-              console.log('activityDate', activityDate);
-              console.log(formattedSelectDateString == activityDate);
-              return formattedSelectDateString == activityDate;
-            });
-
-            if(anActivity) {
-              console.log('hit');
-              return `${anActivity.title}: ${anActivity.pages} Pages`;
-            }
-          }
-          return '';
-        },
-      },
-    ]]);
-
+      }, 
+      [
+        [
+          Tooltip,
+          {
+            text: (date, value, dayjsDate) => {
+              return bookHeatMap.toolTip(date, value, dayjsDate, bookHeatMap);
+            },
+          },
+        ]
+      ]);
     } catch (e) {
       console.log(e);
     }
@@ -334,7 +416,7 @@ function getRandom(arr, n) {
     <div id="puzzles-heatmap"></div>
   </div>
 </div>
-
+-->
 <!--
 <div id="heatmaps">
   {#each heatmaps as heatmap}

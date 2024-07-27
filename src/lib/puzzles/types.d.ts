@@ -1,4 +1,4 @@
-import type { Log } from '../types';
+import type { Log } from '$lib/base';
 
 export interface PuzzleLog extends Log {
   mini: boolean;

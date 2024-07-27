@@ -12,24 +12,24 @@ export interface HeatMapInterface {
   /**
    * Generate value for the Heatmap.
    * Think of it as what is the scoring of each log.
-   * 
+   * SideEffect: It will mutant the inital date with adding a value.
    * @param logs 
    */
-  generateValue(logs: Array<Log>): Array<Log>
+  generateValue(): Array<Log>
 
   /**
    * Generate Domains for a Heatmap.
    * It's a set of scoring from the generateValue
    * @param logs 
    */
-  generateDomains(logs: Array<Log>):Array<Number>;
+  generateDomains():Array<Number>;
 
   /**
    * Generate Range for a Heatmap.
    * Think of it a color corresponding to the value.
    * @param logs 
    */
-  generateRanges(logs: Array<Log>):Array<string>;
+  generateRanges():Array<string>;
 
   /**
    * Used for the HeatMap's Tooltip.
@@ -43,7 +43,5 @@ export interface HeatMapInterface {
 
 export interface Log {
   date: Date;
-  key: string;
+  value: number;
 }
-
-export interface Array<Log> {}

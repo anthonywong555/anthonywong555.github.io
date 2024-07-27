@@ -1,12 +1,12 @@
-import type { HeatMapInterface } from '../base';
+import type { HeatMapInterface } from '$lib/base';
 import type { PuzzleLog } from './types';
-import { findLog, capitalizeFirstLetter } from '../util';
+import { findLog, capitalizeFirstLetter } from '$lib/util';
 
 const PUZZLE_DOMAIN = [1, 2, 3];
 const PUZZLE_RANGES = ['#14432a', '#166b34', '#37a446', '#4dd05a'];
 
-export class PuzzleHeatMap implements HeatMapInterface {
-  logs: Array<PuzzleLog>;
+export default class PuzzleHeatMap implements HeatMapInterface {
+  logs: PuzzleLog[];
   logKeys: Array<string>;
 
   constructor(logs: Array<PuzzleLog>) {
@@ -45,7 +45,7 @@ export class PuzzleHeatMap implements HeatMapInterface {
 
   toolTip(date:any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
     if(value) {
-      const aLog = findLog(new Date(dayjsDate), aHeatMap.logs);
+      const aLog:PuzzleLog = findLog(new Date(dayjsDate), aHeatMap.logs);
 
       if(aLog) {
         // Get a list of items that has the value 'true'.
