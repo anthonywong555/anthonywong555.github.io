@@ -1,4 +1,7 @@
 import csv from "csvtojson";
+import {DateTime, Interval} from "luxon";
+import { Engine } from 'json-rules-engine';
+import type { Log } from "./types";
 
 /**
  * Gets random elements from an arraya
@@ -56,4 +59,44 @@ export async function fetchCSVandConvertToJSON(path: string):Promise<any> {
   } catch (e) {
     throw e;
   }
+}
+
+/**
+ * Check to see if a target date 
+ * @param startDate The start date. If a start date hasn't been supply then it will automatically set as 07/01/2024.
+ * @param endDate The end date. If a end date hasn't been supply then it will automatically set as 07/01/2070.
+ * @param targetDate The date you want to test against.
+ * @returns True or False
+ */
+export function withinDatesRange(startDate: Date = new Date('07/01/2024'), endDate: Date = new Date('07/01/2070'), targetDate: Date | DateTime):Boolean {
+  const anInterval = Interval.fromDateTimes(startDate, endDate);
+  const targetDateTime = targetDate instanceof Date ? DateTime.fromJSDate(targetDate) : targetDate;
+  return anInterval.contains(targetDateTime);
+}
+
+/**
+ * Generate a Baseline Engine.
+ * @returns Engine
+ */
+export function generateBaseEngine():Engine {
+  const engine = new Engine();
+  engine.addOperator('withinDatesRange', (factValue, dateRanges: Date[][]) => {
+    let result = false;
+
+    if(factValue && factValue.date) {
+      const { date } = factValue;
+      for(const dateRange of dateRanges) {
+        const startDate = dateRange[0];
+        const endDate = dateRange[1];
+        if(withinDatesRange(startDate, endDate, date)) {
+          result = true;
+          break;
+        }
+      }
+    }
+
+    return result;
+  });
+
+  return engine;
 }

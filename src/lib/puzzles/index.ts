@@ -1,11 +1,15 @@
 import type { HeatMapInterface } from '../base';
 import type { PuzzleLog } from './types';
+import type { RuleProperties } from 'json-rules-engine';
+import { Engine } from 'json-rules-engine';
 
 export class PuzzleHeatMap implements HeatMapInterface {
   /**
    * Class Methods
    */
-
+  generateJSONRulesEngine():RuleProperties {
+    return PuzzleHeatMap.generateJSONRulesEngine();
+  }
 
   generateValue(logs: Array<PuzzleLog>): Array<PuzzleLog> {
     return PuzzleHeatMap.generateValue(logs);
@@ -19,10 +23,17 @@ export class PuzzleHeatMap implements HeatMapInterface {
     return PuzzleHeatMap.generateRanges(logs);
   }
 
+static generateJSONRulesEngine():RuleProperties {
+  
+  return ;
+}
+
   /**
    * Static Methods
    */
   static generateValue(logs: Array<PuzzleLog>): Array<PuzzleLog> {
+    const engine = new Engine();
+
     const newPuzzleLog = logs.map((aLog) => {
       // Add Rules
       const { mini, strands, connnections, wordle, crossword } = aLog;
