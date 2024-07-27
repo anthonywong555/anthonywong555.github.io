@@ -4,8 +4,6 @@
   import Tooltip from 'cal-heatmap/plugins/Tooltip';
 	import { onMount } from "svelte";
   import { fetchCSVandConvertToJSON } from "$lib/util";
-  //import { PuzzleHeatMap } from '$lib/puzzles';
-  //import { BookHeatMap } from "$lib/booksV2";
   
   /**
    * Constants
@@ -22,20 +20,21 @@
         {
           'id': 'puzzles',
           'title': '🧩🔠 Puzzles ✍🏁',
-          'heatMap': '../lib/puzzles',
+          'heatMap': `puzzles`,
           'sources': `/data/puzzles/NYT.csv`
         }, 
         {
           'id': 'books',
           'title': '📚 Books 🛋️',
-          'heatMap': '../lib/booksV2',
+          'heatMap': 'booksV2',
           'sources': '/data/books/entries.csv'
         }
       ];
       
       // Iterate over the Congrations
       for(const aConfig of testConfigs) {
-        const dynamicImport = await import(aConfig.heatMap);
+        /* @vite-ignore */
+        const dynamicImport = await import(`../lib/${aConfig.heatMap}/index.ts`);
         
         // Check to see if there's a default export.
         if(dynamicImport.default) {
