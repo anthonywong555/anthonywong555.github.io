@@ -15,7 +15,7 @@ export interface HeatMapInterface {
    * SideEffect: It will mutant the inital date with adding a value.
    * @param logs 
    */
-  generateValue(): Array<Log>
+  generateValue?(): Promise<Array<Log>>
 
   /**
    * Generate Domains for a Heatmap.

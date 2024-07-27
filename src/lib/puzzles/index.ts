@@ -18,13 +18,13 @@ export default class PuzzleHeatMap implements HeatMapInterface {
     }
   }
 
-  generateValue(): Array<PuzzleLog> {
+  generateValue(): Promise<Array<PuzzleLog>> {
     const newPuzzleLogs = this.logs.map((aLog) => {
       // Count the number of Puzzles has been in progress or completed.
       let value = 0;
 
       for(const aKey of this.logKeys) {
-        if(aLog[aKey] == 'true') {
+        if(aLog[aKey]) {
           value = value + 1;
         }
       }
@@ -53,7 +53,9 @@ export default class PuzzleHeatMap implements HeatMapInterface {
         // Get a list of items that has the value 'true'.
         let completedPuzzles = [];
         for(const aKey of aHeatMap.logKeys) {
-          if(aLog[aKey] == 'true') {
+          // The `date` field is standard on all logs. 
+          // We don't want to see this on the tool tip.
+          if(aKey != 'date' && aLog[aKey]) {
             completedPuzzles.push(capitalizeFirstLetter(aKey));
           }
         }

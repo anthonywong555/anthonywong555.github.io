@@ -16,7 +16,7 @@ export default class BookHeatMap implements HeatMapInterface {
     }
   }
 
-  generateValue(): Array<BookLog> {
+  generateValue(): Promise<Array<BookLog>> {
     const bookTitles = Array.from(new Set(this.logs.map((aLog) => aLog.title)));
     const logsWithValues = this.logs.map((aBookEntry) => {
       // The Reason why you +1 is because when you do the tool tip. It does the check

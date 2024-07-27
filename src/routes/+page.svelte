@@ -21,25 +21,27 @@
           'id': 'books',
           'title': '📚 Books 🛋️',
           'heatMap': 'books',
+          'scaleType': 'threshold',
           'sources': ['/data/books/entries.csv']
         },
         {
           'id': 'chess',
           'title': '♘ Chess ♞',
           'heatMap': 'chess',
+          'scaleType': 'ordinal',
           'sources': ['/data/chess/ChessDotCom.csv', '/data/chess/TheWoodpeckerMethod.csv']
         },
         {
           'id': 'puzzles',
           'title': '🧩🔠 Puzzles ✍🏁',
           'heatMap': `puzzles`,
+          'scaleType': 'threshold',
           'sources': [`/data/puzzles/NYT.csv`]
         },
       ];
       
       // Iterate over the Congrations
       for(const aConfig of testConfigs) {
-        console.log('aConfig', aConfig);
         const dynamicImport = await import(`../lib/${aConfig.heatMap}/index.ts`);
         
         // Check to see if there's a default export.
@@ -55,7 +57,8 @@
 
           //const targetCSV = await fetchCSVandConvertToJSON([...targetCSVs]);
           const heatMap = new heatMapClass(...targetCSVs);
-          const logs = heatMap.generateValue();
+          const logs = await heatMap.generateValue();
+          console.log(`${aConfig.id}'s logs:'`, logs);
           const domains = heatMap.generateDomains();
           const ranges = heatMap.generateRanges();
 
@@ -72,7 +75,7 @@
           itemSelector: `#${aConfig.id}-heatmap`,
           scale: {
             color: {
-              type: 'threshold',
+              type: aConfig.scaleType,
               domain: domains,
               range: ranges,
             },
