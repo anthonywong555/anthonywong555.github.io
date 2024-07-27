@@ -144,7 +144,9 @@
         [
           Tooltip,
           {
-            text: puzzleHeatMap.toolTip,
+            text: (date, value, dayjsDate) => {
+              return puzzleHeatMap.toolTip(date, value, dayjsDate, puzzleHeatMap);
+            },
           },
         ]]);
 
@@ -209,7 +211,7 @@
         },
       },
     ]]);
-      */
+      *.
     /**
      * Books
     */
