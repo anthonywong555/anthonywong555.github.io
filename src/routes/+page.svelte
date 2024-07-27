@@ -6,7 +6,6 @@
   import "cal-heatmap/cal-heatmap.css";
   import CalHeatmap from 'cal-heatmap';
   import Tooltip from 'cal-heatmap/plugins/Tooltip';
-  import Legend from 'cal-heatmap/plugins/Legend';
 	import { onMount } from "svelte";
 
   import {generateValue, generateDomains, generateRanges} from '../lib/books/index';
@@ -140,15 +139,17 @@
           label: null,
           color: '#FFF',
         }
-        }, [
+        }, 
         [
-          Tooltip,
-          {
-            text: (date, value, dayjsDate) => {
-              return puzzleHeatMap.toolTip(date, value, dayjsDate, puzzleHeatMap);
+          [
+            Tooltip,
+            {
+              text: (date, value, dayjsDate) => {
+                return puzzleHeatMap.toolTip(date, value, dayjsDate, puzzleHeatMap);
+              },
             },
-          },
-        ]]);
+          ]
+        ]);
 
 
       } catch (e) {

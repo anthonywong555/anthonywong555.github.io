@@ -1,10 +1,8 @@
 import type { HeatMapInterface } from '../base';
 import type { PuzzleLog } from './types';
-import type { RuleProperties } from 'json-rules-engine';
-import { Engine } from 'json-rules-engine';
 import { findLog, capitalizeFirstLetter } from '../util';
 
-const PUZZLE_DOMAIN = [1,2,3];
+const PUZZLE_DOMAIN = [1, 2, 3];
 const PUZZLE_RANGES = ['#14432a', '#166b34', '#37a446', '#4dd05a'];
 
 export class PuzzleHeatMap implements HeatMapInterface {
@@ -18,13 +16,6 @@ export class PuzzleHeatMap implements HeatMapInterface {
       const keys = Object.keys(this.logs[0]);
       this.logKeys = keys;
     }
-  }
-
-  /**
-   * Class Methods
-   */
-  generateJSONRulesEngine():Array<RuleProperties> {
-    return null;
   }
 
   generateValue(): Array<PuzzleLog> {
@@ -52,7 +43,7 @@ export class PuzzleHeatMap implements HeatMapInterface {
     return PUZZLE_RANGES;
   }
 
-  toolTip(date:any, value: number, dayjsDate: any, aHeatMap: PuzzleHeatMap) {
+  toolTip(date:any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
     if(value) {
       const aLog = findLog(new Date(dayjsDate), aHeatMap.logs);
 

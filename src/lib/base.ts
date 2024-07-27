@@ -1,4 +1,13 @@
+import type { RuleProperties } from "json-rules-engine";
+
 export interface HeatMapInterface {
+  logs: Log[];
+  logKeys: string[];
+
+  /**
+   * Generate a the JSON Rules for the Engine.
+   */
+  generateJSONRulesEngine?():Array<RuleProperties>;
 
   /**
    * Generate value for the Heatmap.
@@ -21,6 +30,15 @@ export interface HeatMapInterface {
    * @param logs 
    */
   generateRanges(logs: Array<Log>):Array<string>;
+
+  /**
+   * Used for the HeatMap's Tooltip.
+   * @param date Epoch of the Square
+   * @param value Value of the Square
+   * @param dayjsDate Date of the Square
+   * @param aHeatMap The instance of the HeatMap
+   */
+  toolTip(date:any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface);
 }
 
 export interface Log {
