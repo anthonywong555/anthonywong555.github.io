@@ -13,5 +13,4 @@ export interface ChessLog extends Log {
   dailyPuzzle: boolean;
   numberOfGames: number;
   numberOfExercises: number;
-  color?: string;
 }

@@ -1,7 +1,7 @@
 import csv from "csvtojson";
 import {DateTime, Interval} from "luxon";
 import { Engine } from 'json-rules-engine';
-import type { Log } from "./types";
+import type { Log } from "./base";
 
 /**
  * Gets random elements from an arraya

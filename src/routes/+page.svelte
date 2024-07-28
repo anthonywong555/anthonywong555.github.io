@@ -33,7 +33,7 @@
         },
         {
           'id': 'puzzles',
-          'title': '🧩🔠 Puzzles ✍🏁',
+          'title': '🧩🔠 NYC - Puzzles ✍🏁',
           'heatMap': `puzzles`,
           'scaleType': 'threshold',
           'sources': [`/data/puzzles/NYT.csv`]
@@ -60,7 +60,9 @@
           const logs = await heatMap.generateValue();
           console.log(`${aConfig.id}'s logs:'`, logs);
           const domains = heatMap.generateDomains();
+          console.log(`domains`, domains);
           const ranges = heatMap.generateRanges();
+          console.log(`ranges`, ranges);
 
           // Generate the HTML
           heatmaps = [...heatmaps, {...aConfig}];
