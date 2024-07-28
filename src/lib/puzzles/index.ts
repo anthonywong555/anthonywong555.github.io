@@ -47,7 +47,7 @@ export default class PuzzleHeatMap implements HeatMapInterface {
 
   toolTip(date:any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
     if(value) {
-      const aLog:PuzzleLog = findLog(new Date(dayjsDate), aHeatMap.logs);
+      const aLog:PuzzleLog = (findLog(new Date(dayjsDate), aHeatMap.logs) as PuzzleLog);
 
       if(aLog) {
         // Get a list of items that has the value 'true'.

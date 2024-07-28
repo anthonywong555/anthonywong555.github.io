@@ -133,6 +133,7 @@ export default class ChessHeatMap implements HeatMapInterface {
          date: new Date('2020-20-2'),
          value: 0
       };
+
       const keys = Object.keys(dummyObject);
       this.logKeys = keys;
 
@@ -181,13 +182,13 @@ export default class ChessHeatMap implements HeatMapInterface {
 
    toolTip(date: any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
       if(value) {
-         const aLog:ChessLog = findLog(new Date(dayjsDate), aHeatMap.logs);
+         const aLog:ChessLog = (findLog(new Date(dayjsDate), aHeatMap.logs) as ChessLog);
 
          if(aLog) {
          let messages = [];
 
          for(const aKey of this.logKeys) {
-            if(aKey != 'date' && (aLog[aKey] == true && aLog || aLog[aKey] > 0)) {
+            if(aKey != 'date' && aKey != 'value' && (aLog[aKey] == true && aLog || aLog[aKey] > 0)) {
                messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
             }
          }

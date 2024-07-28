@@ -39,7 +39,7 @@ export default class BookHeatMap implements HeatMapInterface {
 
   toolTip(date: any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
     if(value) {
-      const aLog:BookLog = findLog(new Date(dayjsDate), aHeatMap.logs);
+      const aLog:BookLog = (findLog(new Date(dayjsDate), aHeatMap.logs) as BookLog);
 
       if(aLog) {
         // Get a list of items that has the value 'true'.
