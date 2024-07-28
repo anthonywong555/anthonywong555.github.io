@@ -199,10 +199,18 @@ export async function fetchCSVandConvertToJSON(path: string):Promise<any> {
  * @param targetDate The date you want to test against.
  * @returns True or False
  */
-export function withinDatesRange(startDate: Date = new Date('07/01/2024'), endDate: Date = new Date('07/01/2070'), targetDate: Date | DateTime):Boolean {
-  const anInterval = Interval.fromDateTimes(startDate, endDate);
-  const targetDateTime = targetDate instanceof Date ? DateTime.fromJSDate(targetDate) : targetDate;
-  return anInterval.contains(targetDateTime);
+export function withinDatesRange(startDate: string = '2023-07-01', endDate: string = (new Date()).toISOString(), targetDate: string):Boolean {
+  const startDateTime = DateTime.fromISO(startDate);
+  const endDateTime = DateTime.fromISO(endDate);
+
+  // Create an interval
+  const interval = Interval.fromDateTimes(startDateTime, endDateTime);
+
+  const dateToCheck = DateTime.fromISO(targetDate);
+
+  // Check if the date is between the start and end dates
+  const isInInterval = interval.contains(dateToCheck);
+  return isInInterval;
 }
 
 /**
@@ -211,24 +219,20 @@ export function withinDatesRange(startDate: Date = new Date('07/01/2024'), endDa
  */
 export function generateBaseEngine():Engine {
   const engine = new Engine();
-  /*
-  engine.addOperator('withinDatesRange', (factValue, dateRanges: Date[][]) => {
+  
+  engine.addOperator('withinDatesRange', (factValue:any, dateRanges: string[] = []) => {
     let result = false;
 
-    if(factValue && factValue.date) {
-      const { date } = factValue;
-      for(const dateRange of dateRanges) {
-        const startDate = dateRange[0];
-        const endDate = dateRange[1];
-        if(withinDatesRange(startDate, endDate, date)) {
-          result = true;
-          break;
-        }
+    if(factValue) {
+      const startDate = dateRanges[0];
+      const endDate = dateRanges[1];
+      if(withinDatesRange(startDate, endDate, factValue)) {
+        result = true;
       }
     }
 
     return result;
   });
-  */
+  
   return engine;
 }

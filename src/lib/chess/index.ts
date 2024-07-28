@@ -1,6 +1,6 @@
 import type { HeatMapInterface, Log } from "$lib/base";
 import type { ChessDotComLog, TheWoodpeckMethodLog, ChessLog } from "./types";
-import { findLog, combineArrays, generateBaseEngine, fromCamelCaseToNormalCase, type DummyValue } from "$lib/util";
+import { findLog, combineArrays, generateBaseEngine, fromCamelCaseToNormalCase } from "$lib/util";
 
 const autogenEngine = {
    "name":"Chess",
@@ -36,7 +36,12 @@ const autogenEngine = {
                   "fact":"numberOfGames",
                   "operator":"greaterThan",
                   "value":0
-               }
+               },
+               {
+                  "fact":"date",
+                  "operator":"withinDatesRange",
+                  "value":['2024-07-01', (new Date()).toISOString()]
+               },
             ]
          },
          "event":{

@@ -33,7 +33,7 @@
         },
         {
           'id': 'puzzles',
-          'title': '🧩🔠 NYC - Puzzles ✍🏁',
+          'title': '🧩🔠 NYT - Puzzles ✍🏁',
           'heatMap': `puzzles`,
           'scaleType': 'threshold',
           'sources': [`/data/puzzles/NYT.csv`]
