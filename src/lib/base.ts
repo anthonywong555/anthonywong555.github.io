@@ -38,10 +38,11 @@ export interface HeatMapInterface {
    * @param dayjsDate Date of the Square
    * @param aHeatMap The instance of the HeatMap
    */
-  toolTip(date:any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface);
+  toolTip(aLog: Log):string;
 }
 
 export interface Log {
   date: Date;
   value: number;
+  notes?: string;
 }

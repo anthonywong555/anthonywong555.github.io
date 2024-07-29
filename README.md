@@ -22,3 +22,7 @@ Here are a list of tools that I used to built this webpage:
 *For the JSON Rule, how do I set the priority of a rule?*
 
 > You set the rules "closer" to the beginning of the array, that way when it's get evaluted you can use events[0].
+
+*When getting Strava data, what permission should you pick when getting an athletic's activities?*
+
+> activity:read_all. Keep in mind you can only use one scopes at a time.

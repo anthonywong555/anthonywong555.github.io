@@ -1,5 +1,5 @@
 import type { HeatMapInterface, Log } from "$lib/base";
-import type { ChessDotComLog, TheWoodpeckMethodLog, ChessLog } from "./types";
+import type { ChessDotComLog, TheWoodpeckerMethodLog, ChessLog } from "./types";
 import { findLog, combineArrays, generateBaseEngine, fromCamelCaseToNormalCase } from "$lib/util";
 
 const autogenEngine = {
@@ -69,7 +69,12 @@ const autogenEngine = {
                   "fact":"numberOfGames",
                   "operator":"equal",
                   "value":0
-               }
+               },
+               {
+                  "fact":"date",
+                  "operator":"withinDatesRange",
+                  "value":['2024-07-01', (new Date()).toISOString()]
+               },
             ]
          },
          "event":{
@@ -89,19 +94,15 @@ const autogenEngine = {
                   "value":true
                },
                {
-                  "any":[
-                     {
-                        "fact":"numberOfExercises",
-                        "operator":"greaterThan",
-                        "value":0
-                     },
-                     {
-                        "fact":"numberOfGames",
-                        "operator":"greaterThan",
-                        "value":0
-                     }
-                  ]
-               }
+                  "fact":"numberOfGames",
+                  "operator":"greaterThan",
+                  "value":0
+               },
+               {
+                  "fact":"date",
+                  "operator":"withinDatesRange",
+                  "value":['2024-07-01', (new Date()).toISOString()]
+               },
             ]
          },
          "event":{
@@ -117,21 +118,24 @@ const autogenEngine = {
 
 export default class ChessHeatMap implements HeatMapInterface {
    chessDotComLogs: ChessDotComLog[];
-   woodpeckerLogs: TheWoodpeckMethodLog[];
+   woodpeckerLogs: TheWoodpeckerMethodLog[];
    logs: ChessLog[];
    logKeys: Array<string>;
 
-   constructor(chessDotComLogs: ChessDotComLog[], woodpeckerLogs: TheWoodpeckMethodLog[]) {
+   constructor(chessDotComLogs: ChessDotComLog[], woodpeckerLogs: TheWoodpeckerMethodLog[]) {
       this.chessDotComLogs = chessDotComLogs;
       this.woodpeckerLogs = woodpeckerLogs;
 
       // Create a Dummy Object to generate a Logs Keys
+      // This is super helpful when rendering out information.
       const dummyObject:ChessLog = {
+         date: new Date('2020-20-2'),
          dailyPuzzle: false,
          numberOfExercises: 0,
          numberOfGames: 0,
-         date: new Date('2020-20-2'),
-         value: 0
+         value: 0,
+         studying: false,
+         notes: '',
       };
 
       const keys = Object.keys(dummyObject);
@@ -180,23 +184,25 @@ export default class ChessHeatMap implements HeatMapInterface {
       return Array.from(new Set(autogenEngine.decisions.map((aDecision) => aDecision.event.params.color)));
    }
 
-   toolTip(date: any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
-      if(value) {
-         const aLog:ChessLog = (findLog(new Date(dayjsDate), aHeatMap.logs) as ChessLog);
+   toolTip(aLog: ChessLog): string {
+      let messages = [];
 
-         if(aLog) {
-         let messages = [];
-
-         for(const aKey of this.logKeys) {
-            if(aKey != 'date' && aKey != 'value' && (aLog[aKey] == true && aLog || aLog[aKey] > 0)) {
-               messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
-            }
-         }
-
-         return messages.join('.\n');
+      for(const aKey of this.logKeys) {
+         if(aKey != 'date' && aKey != 'value' && aKey != 'description' && (aLog[aKey] == true && aLog || aLog[aKey] > 0)) {
+            messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
          }
       }
 
-      return '';
+      return messages.join('.\n');
+   }
+
+   getCellInfo(aLog: ChessLog):string {
+      const messages = [];
+
+      for(const aKey of this.logKeys) {
+         messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`); 
+      }
+
+      return messages.join('<br>');
    }
 }

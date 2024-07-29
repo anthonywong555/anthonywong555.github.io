@@ -1,6 +1,6 @@
 import type { HeatMapInterface } from "$lib/base";
 import type { BookLog } from "./types";
-import { findLog, getRandomFromArray } from "$lib/util";
+import { findLog, fromCamelCaseToNormalCase, getRandomFromArray } from "$lib/util";
 
 const PASTEL_COLOR = ["#a6cee3","#1f78b4","#b2df8a","#33a02c","#fb9a99","#e31a1c","#fdbf6f","#ff7f00","#cab2d6","#6a3d9a","#ffff99","#b15928"];
 
@@ -37,16 +37,15 @@ export default class BookHeatMap implements HeatMapInterface {
     return getRandomFromArray(PASTEL_COLOR, this.logs.length);
   }
 
-  toolTip(date: any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
-    if(value) {
-      const aLog:BookLog = (findLog(new Date(dayjsDate), aHeatMap.logs) as BookLog);
+  toolTip(aLog: BookLog) {
+    return `${aLog.title} - Pages: ${aLog.pages}`;
+  }
 
-      if(aLog) {
-        // Get a list of items that has the value 'true'.
-        return `${aLog.title} - Pages: ${aLog.pages}`;
-      }
+  getCellInfo(aLog: BookLog) {
+    const messages = [];
+    for(const aKey of this.logKeys) {
+        messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
     }
-    
-    return '';
+    return messages.join('<br>');
   }
 }

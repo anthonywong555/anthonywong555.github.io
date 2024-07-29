@@ -1,6 +1,6 @@
 import type { HeatMapInterface } from '$lib/base';
 import type { PuzzleLog } from './types';
-import { findLog, capitalizeFirstLetter } from '$lib/util';
+import { findLog, capitalizeFirstLetter, fromCamelCaseToNormalCase } from '$lib/util';
 
 const PUZZLE_DOMAIN = [1, 2, 3];
 const PUZZLE_RANGES = ['#14432a', '#166b34', '#37a446', '#4dd05a'];
@@ -45,24 +45,24 @@ export default class PuzzleHeatMap implements HeatMapInterface {
     return PUZZLE_RANGES;
   }
 
-  toolTip(date:any, value: number, dayjsDate: any, aHeatMap: HeatMapInterface) {
-    if(value) {
-      const aLog:PuzzleLog = (findLog(new Date(dayjsDate), aHeatMap.logs) as PuzzleLog);
-
-      if(aLog) {
-        // Get a list of items that has the value 'true'.
-        let completedPuzzles = [];
-        for(const aKey of aHeatMap.logKeys) {
-          // The `date` field is standard on all logs. 
-          // We don't want to see this on the tool tip.
-          if(aKey != 'date' && aLog[aKey]) {
-            completedPuzzles.push(capitalizeFirstLetter(aKey));
-          }
-        }
-
-        return completedPuzzles.join(', ');
+  toolTip(aLog: PuzzleLog) {
+    let completedPuzzles = [];
+    for(const aKey of this.logKeys) {
+      // The `date` field is standard on all logs. 
+      // We don't want to see this on the tool tip.
+      if(aKey != 'date' && aLog[aKey]) {
+        completedPuzzles.push(capitalizeFirstLetter(aKey));
       }
     }
-    return '';
+
+    return completedPuzzles.join(', ');
+  }
+
+  getCellInfo(aLog: PuzzleLog) {
+    const messages = [];
+    for(const aKey of this.logKeys) {
+        messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
+    }
+    return messages.join('<br>');
   }
 }

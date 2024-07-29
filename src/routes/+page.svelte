@@ -3,7 +3,7 @@
   import CalHeatmap from 'cal-heatmap';
   import Tooltip from 'cal-heatmap/plugins/Tooltip';
 	import { onMount } from "svelte";
-  import { fetchCSVandConvertToJSON } from "$lib/util";
+  import { fetchCSVandConvertToJSON, findLog } from "$lib/util";
   
   /**
    * Constants
@@ -11,7 +11,8 @@
   const START_DATE = new Date('07/01/2024');
   const RANGE = 6;
 
-  $: heatmaps = [];
+  let heatMaps = [];
+  //$: cellInfo = [];
 
   onMount(async() => {
     try {
@@ -22,24 +23,27 @@
           'title': '📚 Books 🛋️',
           'heatMap': 'books',
           'scaleType': 'threshold',
-          'sources': ['/data/books/entries.csv']
+          'sources': ['/data/books/entries.csv'],
+          'cellInfo': '',
         },
         {
           'id': 'chess',
           'title': '♘ Chess ♞',
           'heatMap': 'chess',
           'scaleType': 'ordinal',
-          'sources': ['/data/chess/ChessDotCom.csv', '/data/chess/TheWoodpeckerMethod.csv']
+          'sources': ['/data/chess/ChessDotCom.csv', '/data/chess/TheWoodpeckerMethod.csv'],
+          'cellInfo': '',
         },
         {
           'id': 'puzzles',
           'title': '🧩🔠 NYT - Puzzles ✍🏁',
           'heatMap': `puzzles`,
           'scaleType': 'threshold',
-          'sources': [`/data/puzzles/NYT.csv`]
+          'sources': [`/data/puzzles/NYT.csv`],
+          'cellInfo': ''
         },
       ];
-      
+
       // Iterate over the Congrations
       for(const aConfig of testConfigs) {
         const dynamicImport = await import(`../lib/${aConfig.heatMap}/index.ts`);
@@ -58,14 +62,11 @@
           //const targetCSV = await fetchCSVandConvertToJSON([...targetCSVs]);
           const heatMap = new heatMapClass(...targetCSVs);
           const logs = await heatMap.generateValue();
-          console.log(`${aConfig.id}'s logs:'`, logs);
           const domains = heatMap.generateDomains();
-          console.log(`domains`, domains);
           const ranges = heatMap.generateRanges();
-          console.log(`ranges`, ranges);
 
           // Generate the HTML
-          heatmaps = [...heatmaps, {...aConfig}];
+          heatMaps = [...heatMaps, {...aConfig}];
           new CalHeatmap().paint({
             data: {
               source: logs,
@@ -96,7 +97,22 @@
               Tooltip,
               {
                 text: (date, value, dayjsDate) => {
-                  return heatMap.toolTip(date, value, dayjsDate, heatMap);
+                  if(value) {
+                    const aLog = (findLog(new Date(dayjsDate), heatMap.logs));
+                    const toolTip = heatMap.toolTip(aLog);
+                    const cellInfo = heatMap.getCellInfo(aLog);
+
+                    heatMaps = heatMaps.map((aHeatMap) => {
+                      if(aHeatMap.id === aConfig.id) {
+                        aHeatMap.cellInfo = cellInfo;
+                      }
+                      return aHeatMap;
+                    });
+                    
+                    return toolTip;
+                  }
+
+                  return '';
                 },
               },
             ]
@@ -111,11 +127,14 @@
 
 <h1>Anthony Wong's Habit Tracker</h1>
 
-<div id="heatmaps">
-  {#each heatmaps as aHeatMap}
+<div id="heatMaps">
+  {#each heatMaps as aHeatMap}
     <div id={aHeatMap.id}>
       <h1>{aHeatMap.title}</h1>
       <div id={`${aHeatMap.id}-heatmap`}></div>
+      <div id={`${aHeatMap.id}-cell-info`}>
+        {@html aHeatMap.cellInfo}
+      </div>
     </div>
   {/each}
 </div>
