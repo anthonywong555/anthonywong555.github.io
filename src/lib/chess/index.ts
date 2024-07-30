@@ -312,7 +312,7 @@ export default class ChessHeatMap implements HeatMapInterface {
       return messages.join(', ');
    }
 
-   getCellInfo(aLog: ChessLog):string {
+   getLogInfo(aLog: ChessLog):string {
       const messages = [];
 
       for(const aKey of this.logKeys) {

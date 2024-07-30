@@ -58,15 +58,11 @@ export default class PuzzleHeatMap implements HeatMapInterface {
     return completedPuzzles.join(', ');
   }
 
-  getCellInfo(aLog: PuzzleLog) {
+  getLogInfo(aLog: PuzzleLog) {
     const messages = [];
     for(const aKey of this.logKeys) {
         messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
     }
     return messages.join('<br>');
-  }
-
-  getCalendarLabel():any {
-    return null;
   }
 }

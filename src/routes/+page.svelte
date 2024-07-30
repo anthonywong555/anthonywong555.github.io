@@ -100,11 +100,11 @@
                   if(value) {
                     const aLog = (findLog(new Date(dayjsDate), heatMap.logs));
                     const toolTip = heatMap.toolTip(aLog);
-                    const cellInfo = heatMap.getCellInfo(aLog);
+                    const logInfo = heatMap.getLogInfo(aLog);
 
                     heatMaps = heatMaps.map((aHeatMap) => {
                       if(aHeatMap.id === aConfig.id) {
-                        aHeatMap.cellInfo = cellInfo;
+                        aHeatMap.cellInfo = logInfo;
                       }
                       return aHeatMap;
                     });
@@ -116,7 +116,7 @@
                 },
               },
             ],
-            ...(heatMap.getCalendarLabel() ?
+            ...(typeof heatMap.getCalendarLabel != 'undefined' ?
             [
               [CalendarLabel, heatMap.getCalendarLabel()]
             ] : [])

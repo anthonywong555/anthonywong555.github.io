@@ -41,15 +41,11 @@ export default class BookHeatMap implements HeatMapInterface {
     return `${aLog.title} - Pages: ${aLog.pages}`;
   }
 
-  getCellInfo(aLog: BookLog) {
+  getLogInfo(aLog: BookLog) {
     const messages = [];
     for(const aKey of this.logKeys) {
         messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
     }
     return messages.join('<br>');
-  }
-
-  getCalendarLabel():any {
-    return null;
   }
 }

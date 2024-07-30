@@ -40,7 +40,17 @@ export interface HeatMapInterface {
    */
   toolTip(aLog: Log):string;
 
-  getCalendarLabel():any;
+
+  /**
+   * Get Log Info
+   * @param aLog A log.
+   */
+  getLogInfo(aLog: Log):string;
+
+  /**
+   * Get the Calendar Label.
+   */
+  getCalendarLabel?():any;
 }
 
 export interface Log {
