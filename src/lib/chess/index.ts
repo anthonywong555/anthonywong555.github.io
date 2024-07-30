@@ -16,6 +16,10 @@ const autogenEngine = {
       {
          "name":"numberOfGames",
          "type":"number"
+      },
+      {
+         "name":"studying",
+         "type":"object"
       }
    ],
    "decisions":[
@@ -28,9 +32,94 @@ const autogenEngine = {
                   "value":true
                },
                {
+                  "fact":"studying",
+                  "operator":"equal",
+                  "value":false
+               },
+               {
+                  "fact":"numberOfExercises",
+                  "operator":"equal",
+                  "value":0
+               },
+               {
+                  "fact":"numberOfGames",
+                  "operator":"equal",
+                  "value":0
+               },
+               {
+                  "fact":"date",
+                  "operator":"withinDatesRange",
+                  "value":['2024-07-01', '2024-07-29']
+               },
+            ]
+         },
+         "event":{
+            "type":"red",
+            "params":{
+               "color":"red",
+               "value": 7
+            }
+         }
+      },
+      {
+         "conditions":{
+            "all":[
+               {
+                  "fact":"dailyPuzzle",
+                  "operator":"equal",
+                  "value":true
+               },
+               {
+                  "fact":"studying",
+                  "operator":"equal",
+                  "value":true
+               },
+               {
                   "fact":"numberOfExercises",
                   "operator":"greaterThan",
                   "value":0
+               },
+               {
+                  "fact":"numberOfGames",
+                  "operator":"greaterThan",
+                  "value":0
+               },
+               {
+                  "fact":"date",
+                  "operator":"withinDatesRange",
+                  "value":['2024-07-01', (new Date()).toISOString()]
+               },
+            ]
+         },
+         "event":{
+            "type":"purple",
+            "params":{
+               "color":"purple",
+               "value": 4
+            }
+         }
+      },
+      {
+         "conditions":{
+            "all":[
+               {
+                  "fact":"dailyPuzzle",
+                  "operator":"equal",
+                  "value":true
+               },
+               {
+                  "any": [
+                     {
+                        "fact":"studying",
+                        "operator":"equal",
+                        "value":true
+                     },
+                     {
+                        "fact":"numberOfExercises",
+                        "operator":"greaterThan",
+                        "value":0
+                     }
+                  ]
                },
                {
                   "fact":"numberOfGames",
@@ -61,14 +150,51 @@ const autogenEngine = {
                   "value":true
                },
                {
-                  "fact":"numberOfExercises",
-                  "operator":"equal",
+                  "fact":"numberOfGames",
+                  "operator":"greaterThan",
                   "value":0
                },
                {
-                  "fact":"numberOfGames",
+                  "fact":"date",
+                  "operator":"withinDatesRange",
+                  "value":['2024-07-01', (new Date()).toISOString()]
+               },
+            ]
+         },
+         "event":{
+            "type":"green",
+            "params":{
+               "color":"green",
+               "value": 2
+            }
+         }
+      },
+      {
+         "conditions":{
+            "all":[
+               {
+                  "fact":"dailyPuzzle",
                   "operator":"equal",
-                  "value":0
+                  "value":true
+               },
+               {
+                  "any": [
+                     {
+                        "fact":"numberOfExercises",
+                        "operator":"greaterThan",
+                        "value":0
+                     },
+                     {
+                        "fact":"numberOfGames",
+                        "operator":"greaterThan",
+                        "value":0
+                     },
+                     {
+                        "fact":"studying",
+                        "operator":"greaterThan",
+                        "value":true
+                     }
+                  ]
                },
                {
                   "fact":"date",
@@ -89,14 +215,28 @@ const autogenEngine = {
          "conditions":{
             "all":[
                {
-                  "fact":"dailyPuzzle",
-                  "operator":"equal",
-                  "value":true
-               },
-               {
-                  "fact":"numberOfGames",
-                  "operator":"greaterThan",
-                  "value":0
+                  "any": [
+                     {
+                        "fact":"dailyPuzzle",
+                        "operator":"equal",
+                        "value":true
+                     },
+                     {
+                        "fact":"numberOfExercises",
+                        "operator":"greaterThan",
+                        "value":0
+                     },
+                     {
+                        "fact":"numberOfGames",
+                        "operator":"greaterThan",
+                        "value":0
+                     },
+                     {
+                        "fact":"studying",
+                        "operator":"greaterThan",
+                        "value":true
+                     }
+                  ]
                },
                {
                   "fact":"date",
@@ -106,10 +246,10 @@ const autogenEngine = {
             ]
          },
          "event":{
-            "type":"green",
+            "type":"pink",
             "params":{
-               "color":"green",
-               "value": 2
+               "color":"pink",
+               "value": -1 // Catch all. (It can't be zero due to the tooltip.)
             }
          }
       }
@@ -146,11 +286,13 @@ export default class ChessHeatMap implements HeatMapInterface {
 
       // Set Default Values due to JSON Rules Engine.
       result = result.map((aLog) => {
+         
          for(const aKey of this.logKeys) {
-            if(!Object.hasOwn(aLog, aKey)) {
+            if(!Object.hasOwn(aLog, aKey) || aLog[aKey] == '') {
                aLog[aKey] = dummyObject[aKey];
             }
          }
+
          return aLog;
       });
 
@@ -167,8 +309,14 @@ export default class ChessHeatMap implements HeatMapInterface {
       const newLogs = [];
       for(const aLog of this.logs) {
          const { events } = await engine.run(aLog);
-         const result = events[0];
-         newLogs.push({...aLog, ...result.params});
+
+         // Find the highist value 
+         const highestEvent = events.reduce((prev, current) => {
+            return (current.params.value > prev.params.value) ? current : prev;
+         });
+         
+         //const result = events[0];
+         newLogs.push({...aLog, ...highestEvent.params});
       }
 
       this.logs = newLogs;
@@ -189,18 +337,24 @@ export default class ChessHeatMap implements HeatMapInterface {
 
       for(const aKey of this.logKeys) {
          if(aKey != 'date' && aKey != 'value' && aKey != 'description' && (aLog[aKey] == true && aLog || aLog[aKey] > 0)) {
-            messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
+            if(aKey === 'dailyPuzzle' || aKey === 'studying') {
+               messages.push(`${fromCamelCaseToNormalCase(aKey)}`);
+            } else {
+               messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`); 
+            }
          }
       }
 
-      return messages.join('.\n');
+      return messages.join(', ');
    }
 
    getCellInfo(aLog: ChessLog):string {
       const messages = [];
 
       for(const aKey of this.logKeys) {
-         messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`); 
+         if(aKey != 'value') {
+            messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`); 
+         }
       }
 
       return messages.join('<br>');

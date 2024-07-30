@@ -21,7 +21,50 @@ Here are a list of tools that I used to built this webpage:
 
 *For the JSON Rule, how do I set the priority of a rule?*
 
-> You set the rules "closer" to the beginning of the array, that way when it's get evaluted you can use events[0].
+> You can set it based on the params.value.
+
+*For the JSON Rule, how do I set interval bounds?*
+
+```json
+{
+    "conditions":{
+        "all":[
+            {
+                "fact":"dailyPuzzle",
+                "operator":"equal",
+                "value":true
+            },
+            {
+                "fact":"studying",
+                "operator":"equal",
+                "value":false
+            },
+            {
+                "fact":"numberOfExercises",
+                "operator":"equal",
+                "value":0
+            },
+            {
+                "fact":"numberOfGames",
+                "operator":"equal",
+                "value":0
+            },
+            {
+                "fact":"date",
+                "operator":"withinDatesRange",
+                "value":['2024-07-01', '2024-07-29']
+            },
+        ]
+    },
+    "event":{
+        "type":"red",
+        "params":{
+            "color":"red",
+            "value": 7
+        }
+    }
+}
+```
 
 *When getting Strava data, what permission should you pick when getting an athletic's activities?*
 
