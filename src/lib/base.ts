@@ -39,6 +39,8 @@ export interface HeatMapInterface {
    * @param aHeatMap The instance of the HeatMap
    */
   toolTip(aLog: Log):string;
+
+  getCalendarLabel():any;
 }
 
 export interface Log {

@@ -65,4 +65,8 @@ export default class PuzzleHeatMap implements HeatMapInterface {
     }
     return messages.join('<br>');
   }
+
+  getCalendarLabel():any {
+    return null;
+  }
 }

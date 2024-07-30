@@ -2,6 +2,7 @@
   import "cal-heatmap/cal-heatmap.css";
   import CalHeatmap from 'cal-heatmap';
   import Tooltip from 'cal-heatmap/plugins/Tooltip';
+  import CalendarLabel from 'cal-heatmap/plugins/CalendarLabel';
 	import { onMount } from "svelte";
   import { fetchCSVandConvertToJSON, findLog } from "$lib/util";
   
@@ -12,7 +13,6 @@
   const RANGE = 6;
 
   let heatMaps = [];
-  //$: cellInfo = [];
 
   onMount(async() => {
     try {
@@ -115,7 +115,11 @@
                   return '';
                 },
               },
-            ]
+            ],
+            ...(heatMap.getCalendarLabel() ?
+            [
+              [CalendarLabel, heatMap.getCalendarLabel()]
+            ] : [])
           ]);
         }
       }

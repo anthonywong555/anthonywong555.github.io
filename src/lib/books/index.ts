@@ -48,4 +48,8 @@ export default class BookHeatMap implements HeatMapInterface {
     }
     return messages.join('<br>');
   }
+
+  getCalendarLabel():any {
+    return null;
+  }
 }

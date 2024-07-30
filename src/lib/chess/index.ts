@@ -5,13 +5,10 @@ import { findLog, combineArrays, generateBaseEngine, fromCamelCaseToNormalCase }
 const autogenEngine = {
    "name":"Chess",
    "attributes":[
+      // ChessDotComLog
       {
          "name":"dailyPuzzle",
          "type":"object"
-      },
-      {
-         "name":"numberOfExercises",
-         "type":"number"
       },
       {
          "name":"numberOfGames",
@@ -20,47 +17,14 @@ const autogenEngine = {
       {
          "name":"studying",
          "type":"object"
-      }
+      },
+      // TheWoodpeckerMethodLog
+      {
+         "name":"numberOfExercises",
+         "type":"number"
+      },
    ],
    "decisions":[
-      {
-         "conditions":{
-            "all":[
-               {
-                  "fact":"dailyPuzzle",
-                  "operator":"equal",
-                  "value":true
-               },
-               {
-                  "fact":"studying",
-                  "operator":"equal",
-                  "value":false
-               },
-               {
-                  "fact":"numberOfExercises",
-                  "operator":"equal",
-                  "value":0
-               },
-               {
-                  "fact":"numberOfGames",
-                  "operator":"equal",
-                  "value":0
-               },
-               {
-                  "fact":"date",
-                  "operator":"withinDatesRange",
-                  "value":['2024-07-01', '2024-07-29']
-               },
-            ]
-         },
-         "event":{
-            "type":"red",
-            "params":{
-               "color":"red",
-               "value": 7
-            }
-         }
-      },
       {
          "conditions":{
             "all":[
@@ -358,5 +322,16 @@ export default class ChessHeatMap implements HeatMapInterface {
       }
 
       return messages.join('<br>');
+   }
+
+   getCalendarLabel():any {
+      return  {
+         position: 'top',
+         key: 'top',
+         text: () => ['Road to 1600'],
+         width: 200,
+         textAlign: 'middle',
+         padding: [0, 0, 5, 0],
+      };
    }
 }
