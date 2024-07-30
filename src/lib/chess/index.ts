@@ -1,5 +1,6 @@
 import type { HeatMapInterface, Log } from "$lib/base";
 import type { ChessDotComLog, TheWoodpeckerMethodLog, ChessLog } from "./types";
+import CalendarLabel from 'cal-heatmap/plugins/CalendarLabel';
 import { findLog, combineArrays, generateBaseEngine, fromCamelCaseToNormalCase } from "$lib/util";
 
 const autogenEngine = {
@@ -325,13 +326,13 @@ export default class ChessHeatMap implements HeatMapInterface {
    }
 
    getCalendarLabel():any {
-      return  {
+      return  [ CalendarLabel, {
          position: 'top',
-         key: 'top',
+         key: 'chess-heatmap',
          text: () => ['Road to 1600'],
-         width: 200,
+         width: 430,
          textAlign: 'middle',
          padding: [0, 0, 5, 0],
-      };
+      }];
    }
 }

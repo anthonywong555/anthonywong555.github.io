@@ -117,9 +117,8 @@
               },
             ],
             ...(typeof heatMap.getCalendarLabel != 'undefined' ?
-            [
-              [CalendarLabel, heatMap.getCalendarLabel()]
-            ] : [])
+              [heatMap.getCalendarLabel()] : []
+            )
           ]);
         }
       }
@@ -133,9 +132,11 @@
 
 <div id="heatMaps">
   {#each heatMaps as aHeatMap}
-    <div id={aHeatMap.id}>
-      <h1>{aHeatMap.title}</h1>
-      <div id={`${aHeatMap.id}-heatmap`} class="heatmap"></div>
+        <h1>{aHeatMap.title}</h1>
+    <div id={aHeatMap.id} style="display: flex;">
+      <div class="heatmap">
+        <div id={`${aHeatMap.id}-heatmap`}></div>
+      </div>
       <div id={`${aHeatMap.id}-log-info`} class="logInfo">
         {@html aHeatMap.cellInfo}
       </div>

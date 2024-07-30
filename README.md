@@ -69,3 +69,7 @@ Here are a list of tools that I used to built this webpage:
 *When getting Strava data, what permission should you pick when getting an athletic's activities?*
 
 > activity:read_all. Keep in mind you can only use one scopes at a time.
+
+*How do you add another label to the calendar?*
+
+> See [here](https://cal-heatmap.com/docs/plugins/calendarLabel#position).

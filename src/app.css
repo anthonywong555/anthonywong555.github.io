@@ -1,21 +1,16 @@
 /**
  * Calendar Label
  **/
-.ch-plugin-calendar-label-bg {
+[data-key="chess-heatmap"] .ch-plugin-calendar-label-bg {
     fill: black !important;
 }
 
-.ch-plugin-calendar-label-text {
+[data-key="chess-heatmap"] .ch-plugin-calendar-label-text {
     fill: white !important;
 }
 
-.heatmap {
-    width: 40%;
-    display: inline-block;
+.heatmap, .logInfo {
+    flex: 1;
 }
 
-.logInfo {
-    width: 60%;
-    display: inline-block;
-    float: right;
-}
+.logInfo {}
