@@ -135,8 +135,8 @@
   {#each heatMaps as aHeatMap}
     <div id={aHeatMap.id}>
       <h1>{aHeatMap.title}</h1>
-      <div id={`${aHeatMap.id}-heatmap`}></div>
-      <div id={`${aHeatMap.id}-cell-info`}>
+      <div id={`${aHeatMap.id}-heatmap`} class="heatmap"></div>
+      <div id={`${aHeatMap.id}-log-info`} class="logInfo">
         {@html aHeatMap.cellInfo}
       </div>
     </div>

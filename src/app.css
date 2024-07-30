@@ -1,7 +1,21 @@
+/**
+ * Calendar Label
+ **/
 .ch-plugin-calendar-label-bg {
     fill: black !important;
 }
 
 .ch-plugin-calendar-label-text {
     fill: white !important;
-  }
+}
+
+.heatmap {
+    width: 40%;
+    display: inline-block;
+}
+
+.logInfo {
+    width: 60%;
+    display: inline-block;
+    float: right;
+}
