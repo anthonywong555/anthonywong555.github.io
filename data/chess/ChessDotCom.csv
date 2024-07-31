@@ -1,4 +1,5 @@
-date,dailyPuzzle,numberOfGames
-2024-07-24,true,1
-2024-07-25,true,1
-2024-07-26,true,0
+date,dailyPuzzle,numberOfGames,studying,notes
+2024-07-24,true,1,false,
+2024-07-25,true,1,false,
+2024-07-26,true,0,true,Openings
+2024-07-28,true,,,
