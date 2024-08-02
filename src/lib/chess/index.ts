@@ -317,7 +317,7 @@ export default class ChessHeatMap implements HeatMapInterface {
       const messages = [];
 
       for(const aKey of this.logKeys) {
-         if(aKey != 'value') {
+         if(aKey != 'value' && aLog[aKey]) {
             messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`); 
          }
       }

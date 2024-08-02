@@ -16,10 +16,11 @@ export default class PuzzleHeatMap implements HeatMapInterface {
       date: new Date('2020-20-2'),
       mini: false,
       strands: false,
-      connnections: false,
+      connections: false,
       wordle: false,
       crossword: false,
-      notes: ''
+      notes: '',
+      value: 0
     }
 
     this.logKeys = Object.keys(dummyObject);
@@ -68,7 +69,9 @@ export default class PuzzleHeatMap implements HeatMapInterface {
   getLogInfo(aLog: PuzzleLog) {
     const messages = [];
     for(const aKey of this.logKeys) {
+      if(aKey != 'value' && aLog[aKey]) {
         messages.push(`${fromCamelCaseToNormalCase(aKey)}: ${aLog[aKey]}`);
+      }
     }
     return messages.join('<br>');
   }
