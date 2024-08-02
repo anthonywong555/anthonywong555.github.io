@@ -1,6 +1,22 @@
-date,mini,strands,connections,wordle,crossword
-2024-07-26,true,false,false,false,false
-2024-07-27,true,true,false,false,false
-2024-07-28,true,true,true,false,false
-2024-07-29,true,true,true,true,false
-2024-08-01,true,,,,
+date,mini,strands,connections,wordle,crossword,notes
+2024-07-26,true,false,false,false,false,
+2024-07-27,true,true,false,false,false,
+2024-07-28,true,true,true,false,false,
+2024-07-29,true,true,true,true,false,
+2024-08-01,true,,,,,
+2024-08-02,true,true,false,true,false,"
+<br><br>
+Wordle 1,140 2/6
+<br>
+🟨🟩⬜⬜🟩 
+<br>
+🟩🟩🟩🟩🟩
+<br><br>
+Strands #152
+<br>
+“Here, there, and everywhere”
+<br>
+🟡🔵🔵🔵
+<br>
+💡🔵🔵🔵
+"
