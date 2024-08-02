@@ -211,9 +211,9 @@ const autogenEngine = {
             ]
          },
          "event":{
-            "type":"pink",
+            "type":"gold",
             "params":{
-               "color":"pink",
+               "color":"gold",
                "value": -1 // Catch all. (It can't be zero due to the tooltip.)
             }
          }
