@@ -12,10 +12,17 @@ export default class PuzzleHeatMap implements HeatMapInterface {
   constructor(logs: Array<PuzzleLog>) {
     this.logs = logs;
 
-    if(logs.length > 0) {
-      const keys = Object.keys(this.logs[0]);
-      this.logKeys = keys;
+    const dummyObject:PuzzleLog = {
+      date: new Date('2020-20-2'),
+      mini: false,
+      strands: false,
+      connnections: false,
+      wordle: false,
+      crossword: false,
+      notes: ''
     }
+
+    this.logKeys = Object.keys(dummyObject);
   }
 
   generateValue(): Promise<Array<PuzzleLog>> {
