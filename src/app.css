@@ -1,11 +1,19 @@
 /**
  * Calendar Label
  **/
-[data-key="chess-heatmap"] .ch-plugin-calendar-label-bg {
+[data-key="chess-heatmap-1"] .ch-plugin-calendar-label-bg {
     fill: black !important;
 }
 
-[data-key="chess-heatmap"] .ch-plugin-calendar-label-text {
+[data-key="chess-heatmap-1"] .ch-plugin-calendar-label-text {
+    fill: white !important;
+}
+
+[data-key="chess-heatmap-2"] .ch-plugin-calendar-label-bg {
+    fill: black !important;
+}
+
+[data-key="chess-heatmap-2"] .ch-plugin-calendar-label-text {
     fill: white !important;
 }
 

@@ -58,7 +58,7 @@ export default class PuzzleHeatMap implements HeatMapInterface {
     for(const aKey of this.logKeys) {
       // The `date` field is standard on all logs. 
       // We don't want to see this on the tool tip.
-      if(aKey != 'date' && aLog[aKey]) {
+      if(aKey != 'date' && aKey != 'value' && aLog[aKey]) {
         completedPuzzles.push(capitalizeFirstLetter(aKey));
       }
     }

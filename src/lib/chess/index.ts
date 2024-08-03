@@ -326,13 +326,23 @@ export default class ChessHeatMap implements HeatMapInterface {
    }
 
    getCalendarLabel():any {
-      return  [ CalendarLabel, {
-         position: 'top',
-         key: 'chess-heatmap',
-         text: () => ['Road to 1600'],
-         width: 430,
-         textAlign: 'middle',
-         padding: [0, 0, 5, 0],
-      }];
+      return  [
+         [CalendarLabel, {
+            position: 'top',
+            key: 'chess-heatmap-2',
+            text: () => ['Road to 1600'],
+            width: 430,
+            textAlign: 'middle',
+            //padding: [0, 0, 5, 0],
+         }], [ 
+         CalendarLabel, {
+            position: 'top',
+            key: 'chess-heatmap-1',
+            text: () => ['Rapid Rating 895'],
+            width: 100,
+            textAlign: 'middle',
+            padding: [0, 0, 5, 0],
+         }
+      ]];
    }
 }

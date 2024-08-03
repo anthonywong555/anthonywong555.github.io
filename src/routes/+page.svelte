@@ -117,7 +117,7 @@
               },
             ],
             ...(typeof heatMap.getCalendarLabel != 'undefined' ?
-              [heatMap.getCalendarLabel()] : []
+              heatMap.getCalendarLabel() : []
             )
           ]);
         }
