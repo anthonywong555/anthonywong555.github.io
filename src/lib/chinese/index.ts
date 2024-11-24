@@ -28,7 +28,8 @@ export default class PuzzleHeatMap implements HeatMapInterface {
       let value = 0;
 
       for(const aKey of this.logKeys) {
-          if(aLog[aKey] && aKey != 'notes') {
+        console.log(aKey);
+          if(aLog[aKey] && aKey != 'notes' && aKey != 'date') {
             value = value + 1;
           }
       }
