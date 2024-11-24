@@ -13,6 +13,7 @@ export default class PuzzleHeatMap implements HeatMapInterface {
     this.logs = logs;
 
     const dummyObject:ChineseLog = {
+      date: new Date('2020-20-2'),
       isReview: false,
       isLearn: false,
       notes: ''
