@@ -1,2 +1,3 @@
-date,isAnki,isLearn,notes
+date,isReview,isLearn,notes
+2024-11-22,true,
 2024-11-23,true,true,Future Tense
