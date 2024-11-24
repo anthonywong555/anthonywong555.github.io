@@ -18,6 +18,7 @@
     try {
       // Fetch Configurations.
       const testConfigs = [
+        /*
         {
           'id': 'books',
           'title': '📚 Books 🛋️',
@@ -25,7 +26,15 @@
           'scaleType': 'threshold',
           'sources': ['/data/books/entries.csv'],
           'cellInfo': '',
-        },
+        }*/
+       {
+          'id': 'chinese',
+          'title': '🥡 廣東話 🥠',
+          'heatMap': 'chinese',
+          'scaleType': 'threshold',
+          'sources': [`/data/chinese/entries.csv`],
+          'cellInfo': ''
+       },
         {
           'id': 'chess',
           'title': '♘ Chess ♞',

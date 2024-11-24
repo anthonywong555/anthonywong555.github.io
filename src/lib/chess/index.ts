@@ -338,8 +338,8 @@ export default class ChessHeatMap implements HeatMapInterface {
          CalendarLabel, {
             position: 'top',
             key: 'chess-heatmap-1',
-            text: () => ['Rapid Rating 895'],
-            width: 100,
+            text: () => ['Rapid Rating 895', '', '', '','Rapid Rating 905'],
+            width: 80,
             textAlign: 'middle',
             padding: [0, 0, 5, 0],
          }
