@@ -13,6 +13,7 @@
   const RANGE = 5;
 
   let heatMaps = [];
+  let currentConfig;
 
   onMount(async() => {
     try {
@@ -55,6 +56,7 @@
 
       // Iterate over the Congrations
       for(const aConfig of testConfigs) {
+        currentConfig = aConfig;
         const dynamicImport = await import(`../lib/${aConfig.heatMap}/index.ts`);
         
         // Check to see if there's a default export.
@@ -132,6 +134,7 @@
         }
       }
     } catch(e) {
+      console.log(`Current Config: ${JSON.stringify(currentConfig)}`);
       console.log(e);
     }
   });

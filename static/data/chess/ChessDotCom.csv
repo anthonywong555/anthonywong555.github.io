@@ -81,15 +81,7 @@ Game 3: https://www.chess.com/game/live/118025972519
 2024-12-01,true,1,,"<br><br>
 Game 1: https://www.chess.com/game/live/121213284434"
 2024-12-02,true,0,,
-2024-12-03,true,1,,"<br><br>
-Game 1: [Event "Casual Game"]
-[Site "https://lichess.org"]
-[Date "12/3/2024, 7:21:36 PM"]
-[White "Anonymous"]
-[Black "Anonymous"]
-[Result "*"]
-[PlyCount "70"]
-[FEN "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
-[Variant "Standard"]
-[Termination "?"]
-1. e4 c5 2. Nf3 Nc6 3. Bc4 Nf6 4. Nc3 e6 5. d3 a6 6. O-O b5 7. Bb3 b4 8. Ne2 Be7 9. Re1 O-O 10. Ng3 Bd6 11. Bg5 Bxg3 12. hxg3 h6 13. Be3 Ng4 14. Bxc5 d6 15. Be3 e5 16. d4 Nxe3 17. Rxe3 Bg4 18. dxe5 Nxe5 19. Qd5 Nxf3+ 20. gxf3 Be6 21. Qd2 a5 22. Rd1 Qf6 23. Bxe6 Qxe6 24. Qxd6 Qxa2 25. Qe5 Rfe8 26. Qc7 Qxb2 27. Rd7 Rec8 28. Qf4 Rf8 29. Rc7 Rac8 30. Rd3 Rxc7 31. Qxc7 a4 32. Qa5 a3 33. Rd8 a2 34. Ra8 Rxa8 35. Qxa8+ Kh7 *"
+2024-12-03,true,1,,
+2024-12-04,true,0,,
+2024-12-05,true,0,,
+2024-12-06,true,0,,
