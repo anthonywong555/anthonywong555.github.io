@@ -17,6 +17,20 @@ Here are a list of tools that I used to built this webpage:
 - [JSON-Rules-Engine](https://github.com/CacheControl/json-rules-engine)
 - [JSON Rule Editor](https://www.json-rule-editor.com/#/home)
 
+## Template Entries
+
+NYT
+```csv
+2025-02-23,true,,true,true,,"
+<br><br>
+I solved the 02/23/2025 New York Times Mini Crossword in 1:47!
+<br><br>
+
+<br><br>
+
+"
+```
+
 ## Things to remember:
 
 *For the JSON Rule, how do I set the priority of a rule?*

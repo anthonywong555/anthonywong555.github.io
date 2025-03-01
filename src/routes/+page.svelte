@@ -9,7 +9,7 @@
   /**
    * Constants
    */
-  const START_DATE = new Date('01/01/2025');
+  const START_DATE = new Date('03/01/2025');
   const RANGE = 5;
 
   let heatMaps = [];
